@@ -38,3 +38,13 @@ export const theme = {
 };
 
 export const accentKeys = ["violet", "pink", "green", "sky", "lavender"];
+
+/* 토큰 색에 16진 알파를 붙입니다 — alpha(cv.pink, "55") → "#f776c455" */
+export const alpha = (color, aa) => `${color}${aa}`;
+
+/* 프로젝트별 액센트 호버 — 전역 --accent가 아닌 개별 색이라 CSS가 아닌 JS로 걸립니다.
+   반환값을 요소에 그대로 펼쳐 넣으면 마우스 진입 시 색이 붙고 이탈 시 원래대로 돌아갑니다. */
+export const accentHover = (color, props = ["borderColor"]) => ({
+  onMouseEnter: (e) => props.forEach((p) => (e.currentTarget.style[p] = color)),
+  onMouseLeave: (e) => props.forEach((p) => (e.currentTarget.style[p] = "")),
+});

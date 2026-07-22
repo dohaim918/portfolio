@@ -1,4 +1,6 @@
 import { nav } from "../data/nav";
+import { social } from "../data/social";
+import ExtLink from "./ExtLink";
 
 export default function MobileNav({ menu, scrollTo }) {
   return (
@@ -13,8 +15,8 @@ export default function MobileNav({ menu, scrollTo }) {
         ))}
       </ul>
       <div className="mnav-ft">
-        <a href="https://github.com/dohaim918" target="_blank" rel="noreferrer">GITHUB</a>
-        <a href="mailto:nzspave1121@gmail.com">MAIL</a>
+        <ExtLink href={social.github}>GITHUB</ExtLink>
+        <a href={social.mail}>MAIL</a>
       </div>
     </nav>
   );

@@ -5,6 +5,7 @@ import { navIds } from "./data/nav";
 import { useReveal } from "./hooks/useReveal";
 import { useScrollSpy } from "./hooks/useScrollSpy";
 import { useWheelGate } from "./hooks/useWheelGate";
+import { useIntroGate } from "./hooks/useIntroGate";
 import Header from "./components/Header";
 import MobileNav from "./components/MobileNav";
 import Intro from "./components/Intro";
@@ -53,8 +54,6 @@ export default function DohaPortfolioV11() {
   const [tab, setTab] = useState("Language");
   const [filter, setFilter] = useState("all");
   const [menu, setMenu] = useState(false);
-  const [topBtn, setTopBtn] = useState(false);
-  const [playKey, setPlayKey] = useState(0); // 인트로 리플레이 트리거 (0 = 첫 로드 풀 시퀀스)
   const wrapRef = useRef(null);   // 페이지 스크롤 컨테이너
   const pgRef = useRef(null);     // 헤더 프로그레스 바
   const introRef = useRef(null);
@@ -66,30 +65,7 @@ export default function DohaPortfolioV11() {
   // intro·hero는 네비에 없는 id — 활성화되면 어떤 버튼과도 일치하지 않아 밑줄이 해제된다
   const activeSec = useScrollSpy(["intro", "hero", ...navIds]);
   const glideRef = useWheelGate({ wrapRef, introRef, pgRef });
-
-  /* 인트로 가시성 — 벗어나면 TOP 버튼, 재진입하면 축약 리플레이 */
-  useEffect(() => {
-    const el = introRef.current;
-    if (!el) return;
-    let away = false;
-    const ob = new IntersectionObserver(
-      ([e]) => {
-        if (!e.isIntersecting) {
-          away = true;
-          setTopBtn(true);
-        } else {
-          setTopBtn(false);
-          if (away) {
-            away = false;
-            setPlayKey((k) => k + 1); // 리마운트로 CSS 애니메이션 재트리거
-          }
-        }
-      },
-      { threshold: 0.35 }
-    );
-    ob.observe(el);
-    return () => ob.disconnect();
-  }, []);
+  const { topBtn, playKey } = useIntroGate(introRef);
 
   /* 모바일 메뉴 열림 시 배경 스크롤 잠금 (컨테이너 기준) */
   useEffect(() => {
