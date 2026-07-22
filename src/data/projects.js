@@ -66,7 +66,7 @@ export const projects = [
     stack: ["React", "Vite", "JavaScript", "Figma"],
     links: [{ txt: "GITHUB", url: "https://github.com/dohaim918/hwaseong-yahwa-web" }],
     img: null, // 스크린샷 경로/URL 입력 시 자동 적용
-    imgLabel: "MAIN VISUAL · 1280×800",
+    imgLabel: "MAIN VISUAL",
   },
   {
     type: "sub",
@@ -81,7 +81,7 @@ export const projects = [
     type: "sub",
     category: "personal",
     name: "About Me Page",
-    accent: "lavender",
+    accent: "green",
     txt: "Figma 디자인의 100% 구현을 목표로 한 첫 반응형 웹. Soft Gradient 톤과 자연스러운 시선 흐름을 설계했습니다.",
     stack: ["HTML5", "CSS3", "Figma"],
     url: "https://dohaim918.github.io/About-Me-page/",

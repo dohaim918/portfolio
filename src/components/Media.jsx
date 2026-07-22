@@ -18,7 +18,7 @@ export default function Media({ img, label, accent, url, ratio = "16 / 10" }) {
           <div className="md-ph">
             <span style={{ color: accent }}>▨</span>
             <em>{label}</em>
-            <small>이미지 교체 예정 · img 필드에 경로 입력</small>
+            <small>스크린샷 준비 중</small>
           </div>
         )}
         {/* 액센트 오버레이 — 특수 그라디언트값은 인라인 유지 */}
@@ -47,8 +47,8 @@ export function PrMedia({ img }) {
         ) : (
           <div className="md-ph">
             <span>▨</span>
-            <em>PROFILE IMAGE · 4:5</em>
-            <small>이미지 교체 예정</small>
+            <em>PROFILE IMAGE</em>
+            <small>사진 준비 중</small>
           </div>
         )}
       </div>

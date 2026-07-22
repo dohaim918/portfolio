@@ -1,23 +1,25 @@
+/* accent는 projects.js의 같은 작업과 반드시 일치시킵니다 —
+   한 작업이 섹션마다 다른 색으로 보이면 토큰 시스템이라는 주장이 무너집니다. */
 export const journey = [
   {
     date: "2025.12",
     ttl: "Design to Code, 시작점",
     tag: "About Me Page",
-    accent: "lavender",
+    accent: "green",
     txt: "Figma 시안을 코드로 100% 옮기며, 화면의 균형과 시선 흐름을 구조로 설계하는 법을 익혔습니다.",
   },
   {
     date: "2026.02",
     ttl: "첫 팀 협업, 디자인 총괄",
     tag: "flowdash · 2인 팀",
-    accent: "green",
+    accent: "pink",
     txt: "순수 JS로 칸반 대시보드를 완성하며 브랜치 전략 · PR 협업과 필터 파이프라인 설계를 경험했습니다.",
   },
   {
     date: "2026.03 – 04",
     ttl: "React, 그리고 테마 시스템",
     tag: "PULSE · 5인 팀",
-    accent: "pink",
+    accent: "violet",
     txt: "이커머스 전체 흐름을 API 기반으로 구현하고, 메인 페이지와 다크 · 라이트 반전 테마 시스템을 총괄했습니다.",
   },
   {
@@ -31,7 +33,7 @@ export const journey = [
     date: "2026.06 – 진행중",
     ttl: "기획부터 구현까지, 혼자 힘으로",
     tag: "화성야화",
-    accent: "violet",
+    accent: "lavender",
     txt: "야간 미디어아트 축제 웹을 세계관 카피부터 디자인, React 구현까지 단독으로 진행하고 있습니다.",
   },
 ];

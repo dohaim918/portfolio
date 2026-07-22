@@ -164,6 +164,8 @@ export function buildCss({ cv, accent, mode }) {
         .mnav button{background:none;border:none;cursor:pointer;text-align:left;width:100%;padding:16px 0;font-size:26px;font-weight:800;color:var(--main);font-family:${theme.fonts.body};border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:14px;}
         .mnav button i{font-style:normal;font-family:${theme.fonts.num};font-size:16px;color:var(--accent);}
         .mnav .mnav-ft{margin-top:44px;display:flex;gap:18px;font-family:${theme.fonts.mono};font-size:12px;color:var(--muted);}
+        /* 터치 전용 메뉴라 링크 높이를 손가락 기준으로 확보 */
+        .mnav .mnav-ft a{display:inline-flex;align-items:center;min-height:44px;}
 
         /* ---------- shared surfaces & controls ----------
            여러 섹션이 글자 그대로 똑같이 쓰는 선언만 모읍니다.
@@ -204,7 +206,7 @@ export function buildCss({ cv, accent, mode }) {
         .tk-sw:hover{transform:translateY(-3px);}
         .tk-sw:focus-visible{outline:2px solid var(--main);outline-offset:2px;}
         .tk-sw.act{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--accent);}
-        .tk-hint{font-size:11px;color:var(--muted);letter-spacing:.06em;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);}
+        .tk-hint{font-size:11px;color:var(--muted);letter-spacing:.06em;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);word-break:keep-all;}
 
         /* ---------- section common ---------- */
         .sec{padding:130px 0;border-bottom:1px solid var(--line);}
