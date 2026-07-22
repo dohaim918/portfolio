@@ -589,7 +589,7 @@ export default function DohaPortfolioV11() {
         @keyframes itFade{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
         @keyframes itBg{from{opacity:0;}to{opacity:1;}}
         @keyframes itSettle{from{transform:scale(1.06);}to{transform:scale(1);}}
-        @keyframes itType{from{width:0;}to{width:36ch;}}
+        @keyframes itType{from{width:0;}to{width:calc(36ch + 1.44em);}}
         @keyframes itCaret{0%,100%{opacity:1;}50%{opacity:0;}}
         @keyframes itFloat{0%{transform:translateY(0);}100%{transform:translateY(-26px);}}
         @keyframes itLine{to{transform:scaleY(1);}}
@@ -629,11 +629,11 @@ export default function DohaPortfolioV11() {
         .it-type b{font-weight:400;margin-left:2px;animation:itCaret 1s step-end infinite;}
         .it-typo{will-change:transform;transition:transform .25s ease-out;}
         .it-ln{display:block;overflow:hidden;line-height:.94;padding-bottom:.04em;}
-        .it-ln span{display:block;font-family:${theme.fonts.num};font-size:clamp(72px,14vw,190px);letter-spacing:.02em;transform:translateY(110%);animation:itRise .9s cubic-bezier(.2,.9,.25,1) forwards,itBlur 1s ease forwards;}
+        .it-ln span{display:block;font-family:${theme.fonts.num};font-weight:400;font-size:clamp(72px,14vw,190px);letter-spacing:.02em;transform:translateY(110%);animation:itRise .9s cubic-bezier(.2,.9,.25,1) forwards,itBlur 1s ease forwards;}
         .it-ln.l1 span{animation-delay:.55s,.55s;color:transparent;-webkit-text-stroke:1.5px var(--main);}
         .it-ln.l2 span{animation-delay:.78s,.78s;}
         .it-ln.l2 .arw{display:inline-block;color:var(--accent);transition:color .3s;}
-        .it-ln.l2 .cd{background:linear-gradient(94deg,var(--accent),${cv.lavender});-webkit-background-clip:text;background-clip:text;color:transparent;}
+        .it-ln.l2 .cd{background:linear-gradient(94deg,var(--accent),${cv.lavender});-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.18em;}
         .it-kr{position:relative;padding-left:18px;opacity:0;animation:itFade .8s ease 1.4s forwards;font-size:clamp(17px,2.2vw,24px);font-weight:700;color:var(--sub);margin-top:38px;word-break:keep-all;}
         .it-kr::before{content:"";position:absolute;left:0;top:5px;bottom:5px;width:2.5px;background:var(--accent);transform:scaleY(0);transform-origin:top;animation:itLine .5s ease 1.55s forwards;transition:background .3s;}
         .it-kr strong{color:var(--main);}
@@ -671,7 +671,7 @@ export default function DohaPortfolioV11() {
         .top-btn svg{width:16px;height:16px;stroke:var(--main);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s;}
 
         /* ---------- header ---------- */
-        .hd{position:fixed;top:0;left:0;right:0;z-index:100;background:${mode === "dark" ? "rgba(6,6,14,0.75)" : "rgba(236,233,255,0.8)"};backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:background .45s;}
+        .hd{position:fixed;top:0;left:0;right:0;z-index:250;background:${mode === "dark" ? "rgba(6,6,14,0.75)" : "rgba(236,233,255,0.8)"};backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:background .45s;}
         .hd .inner{display:flex;align-items:center;justify-content:space-between;height:66px;gap:16px;}
         .pg{position:absolute;left:0;right:0;bottom:-1px;height:2px;pointer-events:none;}
         .pg i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),${cv.lavender});transform-origin:left;transform:scaleX(0);}
@@ -825,7 +825,7 @@ export default function DohaPortfolioV11() {
         .pf-item:nth-child(even) .pf-media{order:1;}
         .pf-lb{font-family:${theme.fonts.disp};font-size:10.5px;font-weight:700;letter-spacing:.3em;display:block;margin-bottom:14px;}
         .pf-name{font-size:clamp(24px,3vw,38px);font-weight:800;letter-spacing:-0.01em;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;}
-        .pf-num{font-family:${theme.fonts.num};font-size:.8em;color:transparent;-webkit-text-stroke:1px ${cv.muted};}
+        .pf-num{font-family:${theme.fonts.num};font-weight:400;font-size:.8em;color:transparent;-webkit-text-stroke:1px ${cv.muted};}
         .pf-meta{font-family:${theme.fonts.mono};font-size:12px;color:var(--muted);letter-spacing:.05em;margin:10px 0 22px;line-height:1.9;}
         .pf-desc{color:var(--sub);font-size:15.5px;word-break:keep-all;margin-bottom:22px;}
         .pf-role{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:26px;}
