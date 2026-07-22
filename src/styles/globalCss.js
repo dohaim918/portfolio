@@ -51,11 +51,11 @@ export function buildCss({ cv, accent, mode }) {
           background-size:72px 72px;
           mask-image:radial-gradient(ellipse 80% 70% at 50% 45%,#000 30%,transparent 100%);
           -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 45%,#000 30%,transparent 100%);}
-        /* 아래쪽 글로우는 인트로 안에서 투명해져야 합니다 — 섹션 구분선을 없앤 뒤로는
-           바닥에 색이 남아 있으면 About과의 경계에 가로줄이 그대로 드러납니다 */
+        /* 인트로는 휠 게이트가 한 화면씩 넘겨 경계에 머무를 일이 없고,
+           About에 도착하면 경계가 고정 헤더 뒤로 가려집니다 — 원래 값 그대로 둡니다 */
         .it-amb{position:absolute;inset:0;pointer-events:none;opacity:0;animation:itBg 1.6s ease forwards;
-          background:radial-gradient(720px 42% at 72% 26%, ${accent}${mode === "dark" ? "1e" : "2a"}, transparent 70%),
-                     radial-gradient(560px 34% at 14% 66%, ${cv.deepPink}${mode === "dark" ? "2e" : "24"}, transparent 72%);
+          background:radial-gradient(720px 480px at 72% 20%, ${accent}${mode === "dark" ? "1e" : "2a"}, transparent 68%),
+                     radial-gradient(560px 420px at 14% 88%, ${cv.deepPink}${mode === "dark" ? "2e" : "24"}, transparent 70%);
           transition:background .6s ease;}
         .it-glow{position:absolute;top:0;left:0;width:560px;height:560px;border-radius:50%;pointer-events:none;
           background:radial-gradient(circle, ${accent}${mode === "dark" ? "17" : "20"} 0%, transparent 62%);
