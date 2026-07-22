@@ -45,15 +45,17 @@ export function buildCss({ cv, accent, mode }) {
         @keyframes itSpin{to{transform:rotate(360deg);}}
 
         /* ---------- intro ---------- */
-        .it{position:relative;height:100dvh;min-height:620px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;border-bottom:1px solid var(--line);}
+        .it{position:relative;height:100dvh;min-height:620px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;}
         .it-grid{position:absolute;inset:0;pointer-events:none;opacity:0;animation:itBg 1.4s ease .1s forwards,itSettle 2s ease .1s forwards;
           background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
           background-size:72px 72px;
           mask-image:radial-gradient(ellipse 80% 70% at 50% 45%,#000 30%,transparent 100%);
           -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 45%,#000 30%,transparent 100%);}
+        /* 아래쪽 글로우는 인트로 안에서 투명해져야 합니다 — 섹션 구분선을 없앤 뒤로는
+           바닥에 색이 남아 있으면 About과의 경계에 가로줄이 그대로 드러납니다 */
         .it-amb{position:absolute;inset:0;pointer-events:none;opacity:0;animation:itBg 1.6s ease forwards;
-          background:radial-gradient(720px 480px at 72% 20%, ${accent}${mode === "dark" ? "1e" : "2a"}, transparent 68%),
-                     radial-gradient(560px 420px at 14% 88%, ${cv.deepPink}${mode === "dark" ? "2e" : "24"}, transparent 70%);
+          background:radial-gradient(720px 42% at 72% 26%, ${accent}${mode === "dark" ? "1e" : "2a"}, transparent 70%),
+                     radial-gradient(560px 34% at 14% 66%, ${cv.deepPink}${mode === "dark" ? "2e" : "24"}, transparent 72%);
           transition:background .6s ease;}
         .it-glow{position:absolute;top:0;left:0;width:560px;height:560px;border-radius:50%;pointer-events:none;
           background:radial-gradient(circle, ${accent}${mode === "dark" ? "17" : "20"} 0%, transparent 62%);
@@ -229,7 +231,39 @@ export function buildCss({ cv, accent, mode }) {
         .tk-hint{font-size:11px;color:var(--muted);letter-spacing:.06em;margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);word-break:keep-all;}
 
         /* ---------- section common ---------- */
-        .sec{padding:130px 0;border-bottom:1px solid var(--line);}
+        /* 섹션 구분은 선이 아니라 여백으로 합니다 —
+           각 섹션에 큰 번호와 라벨이 있어 선은 중복 신호였고, 5번 반복되며 페이지를 토막 냈습니다 */
+        .sec{padding:160px 0;}
+
+        /* ---------- 앰비언트 글로우 ----------
+           선을 걷어낸 자리를 빛의 흐름이 대신합니다. 규칙 세 가지:
+           1) 중심을 화면 좌우 바깥(-6% / 106%)에 두고 번짐만 들어오게 합니다.
+              동그란 덩어리가 아니라 옆에서 스며드는 결로 보입니다.
+           2) 세로는 중심 50% · 크기 46% · 페이드 72%라 섹션 위아래 경계에 닿기 전에
+              완전히 투명해집니다 — 경계에서 각지게 잘리지 않습니다.
+           3) 좌 → 우 → 좌로 번갈아 배치해 위아래 글로우가 세로로 겹치지 않습니다.
+           4) 색은 보라~자주 계열(violet · deepPink · 액센트)로만 돌립니다.
+              sky·lavender 같은 차가운 색을 섞으니 청보라가 핑크와 부딪혔고,
+              반대로 한 색만 쓰면 페이지 전체가 핑크 일변도가 됩니다.
+              Skills에만 액센트를 써서 스와치로 색을 바꿀 때 배경도 함께 반응합니다.
+           5) 알파는 색마다 다릅니다 — deepPink는 휘도가 낮아(.32) violet(.56)보다
+              크게 잡아야 체감 세기가 비슷해집니다. */
+        #about,#journey,#skills,#projects{position:relative;isolation:isolate;}
+        #about::before,#journey::before,#skills::before,#projects::before{
+          content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;transition:background .6s ease;}
+        #about::before{
+          background:radial-gradient(980px 58% at -6% 50%, ${cv.violet}${mode === "dark" ? "20" : "28"}, transparent 74%);}
+        /* Journey에만 초록 한 톤 — 자주색 아래로 흘러내리게 두고,
+           휘도가 가장 높아(.80) 알파는 가장 낮게 잡습니다 */
+        #journey::before{
+          background:radial-gradient(940px 64% at 106% 50%, ${cv.deepPink}${mode === "dark" ? "2c" : "1e"}, transparent 74%),
+                     radial-gradient(700px 26% at 100% 76%, ${cv.violet}${mode === "dark" ? "10" : "18"}, transparent 60%);}
+        #skills::before{
+          background:radial-gradient(900px 58% at -6% 50%, ${accent}${mode === "dark" ? "18" : "22"}, transparent 74%);}
+        /* 프로젝트는 세로로 길어 두 덩이를 위아래로 떨어뜨려 넣습니다 */
+        #projects::before{
+          background:radial-gradient(940px 30% at 106% 24%, ${cv.violet}${mode === "dark" ? "1e" : "26"}, transparent 74%),
+                     radial-gradient(880px 28% at -6% 72%, ${cv.deepPink}${mode === "dark" ? "28" : "1c"}, transparent 74%);}
         .sec-ttl{display:flex;align-items:baseline;gap:18px;margin-bottom:64px;flex-wrap:wrap;}
         .sec-ttl .no{font-family:${theme.fonts.num};font-size:52px;line-height:1;color:transparent;-webkit-text-stroke:1px var(--accent);}
         .sec-ttl h2{font-size:clamp(22px,2.8vw,34px);font-weight:800;letter-spacing:-0.01em;word-break:keep-all;}
@@ -272,14 +306,6 @@ export function buildCss({ cv, accent, mode }) {
         .pr-frm:hover .pr-bd img{filter:none;}
 
         /* ---------- about ---------- */
-        /* 앰비언트 글로우 — 인트로에서 이어지는 분위기를 About까지 끌고 옵니다.
-           본문 가독성을 위해 히어로보다 알파를 한 단계 낮췄습니다.
-           isolation으로 스택 컨텍스트를 만들어 z-index:-1이 섹션 안에 갇히게 합니다. */
-        #about{position:relative;isolation:isolate;}
-        #about::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-          background:radial-gradient(660px 420px at 16% 14%, ${accent}${mode === "dark" ? "18" : "24"}, transparent 68%),
-                     radial-gradient(520px 380px at 90% 84%, ${cv.deepPink}${mode === "dark" ? "22" : "1c"}, transparent 70%);
-          transition:background .6s ease;}
         .ab-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(48px,5vw,76px);align-items:center;}
         .ab-txt p{color:var(--sub);font-size:16px;line-height:1.8;margin-bottom:22px;word-break:keep-all;}
         /* 도입 문단만 한 단계 키워 시선 진입점을 만듭니다 */
@@ -328,7 +354,8 @@ export function buildCss({ cv, accent, mode }) {
         .pf-links{display:flex;gap:12px;flex-wrap:wrap;}
 
         /* ---------- sub projects ---------- */
-        .sub-hd{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:130px 0 40px;}
+        /* 메인과 서브는 같은 04 섹션 안의 다른 묶음이라, 섹션 사이 여백(160px)에 근접하게 띄웁니다 */
+        .sub-hd{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:190px 0 40px;}
         .sub-ttl{font-family:${theme.fonts.disp};font-size:12px;font-weight:700;letter-spacing:.3em;color:var(--muted);}
         .sub-filters{display:flex;gap:8px;}
         .sub-filters button{padding:8px 18px;font-size:11.5px;letter-spacing:.1em;}
@@ -347,15 +374,20 @@ export function buildCss({ cv, accent, mode }) {
         .sub-next b{font-family:${theme.fonts.num};font-size:26px;letter-spacing:.06em;color:var(--muted);font-weight:400;}
         .sub-next p{flex:0;margin:0;font-size:12.5px;}
 
-        /* ---------- contact ---------- */
-        .ft{padding:150px 0 80px;text-align:center;position:relative;}
-        .ft-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(620px 340px at 50% 100%, ${cv.deepPink}${mode === "dark" ? "33" : "26"}, transparent 70%);}
+        /* ---------- contact ----------
+           인트로와 같은 풀스크린으로 페이지를 수미상관으로 닫습니다.
+           카피라이트는 흐름에서 떼어 바닥에 붙입니다. */
+        .ft{min-height:100dvh;padding:120px 0 40px;text-align:center;position:relative;display:flex;flex-direction:column;justify-content:center;}
+        /* 마무리 섹션은 아래에서 올라오는 빛 하나만 — 좌상단에 하나 더 두니 방향이 겹쳐 지저분했습니다 */
+        .ft-bg{position:absolute;inset:0;pointer-events:none;
+          background:radial-gradient(720px 46% at 50% 78%, ${cv.deepPink}${mode === "dark" ? "33" : "26"}, transparent 72%);
+          transition:background .6s ease;}
         .ft .inner{position:relative;}
         .ft-ttl{font-family:${theme.fonts.num};font-size:clamp(48px,8vw,110px);line-height:.95;letter-spacing:.02em;margin-bottom:26px;}
         .ft-ttl b{color:var(--accent);font-weight:400;transition:color .3s;}
         .ft p{color:var(--sub);margin-bottom:46px;word-break:keep-all;}
         .ft-links{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;}
-        .ft-copy{margin-top:76px;font-family:${theme.fonts.mono};font-size:11px;letter-spacing:.14em;color:var(--muted);}
+        .ft-copy{position:absolute;left:0;right:0;bottom:40px;font-family:${theme.fonts.mono};font-size:11px;letter-spacing:.14em;color:var(--muted);}
 
         /* ---------- responsive ---------- */
         @media (max-width:960px){

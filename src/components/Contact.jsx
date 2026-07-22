@@ -13,8 +13,9 @@ export default function Contact() {
           <ActionLink href={social.github} size="lg">GITHUB ↗</ActionLink>
           <ActionLink href={social.instagram} size="lg">INSTAGRAM ↗</ActionLink>
         </div>
-        <p className="ft-copy">© 2026 DOHA KIM · DESIGN TO CODE · PORTFOLIO v11</p>
       </div>
+      {/* 바닥에 붙이려면 .inner(position:relative) 밖에 있어야 .ft 기준으로 잡힙니다 */}
+      <p className="ft-copy">© 2026 DOHA KIM · DESIGN TO CODE · PORTFOLIO v11</p>
     </footer>
   );
 }
