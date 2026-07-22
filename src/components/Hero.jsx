@@ -1,6 +1,6 @@
 import { accentKeys } from "../theme";
 import { social } from "../data/social";
-import ExtLink from "./ExtLink";
+import ActionLink from "./ActionLink";
 
 export default function Hero({ mode, accent, accentKey, setAccentKey, cv }) {
   return (
@@ -19,9 +19,9 @@ export default function Hero({ mode, accent, accentKey, setAccentKey, cv }) {
             액센트 교체가 즉시 일어납니다.
           </p>
           <div className="hero-sns">
-            <ExtLink href={social.github}>GITHUB ↗</ExtLink>
-            <ExtLink href={social.instagram}>INSTAGRAM ↗</ExtLink>
-            <a href={social.mail}>MAIL ↗</a>
+            <ActionLink href={social.github}>GITHUB ↗</ActionLink>
+            <ActionLink href={social.instagram}>INSTAGRAM ↗</ActionLink>
+            <ActionLink href={social.mail} external={false}>MAIL ↗</ActionLink>
           </div>
         </div>
 

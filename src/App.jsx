@@ -9,7 +9,7 @@ import { useIntroGate } from "./hooks/useIntroGate";
 import Header from "./components/Header";
 import MobileNav from "./components/MobileNav";
 import Intro from "./components/Intro";
-import Hero from "./components/Hero";
+// import Hero from "./components/Hero"; // HERO 보관 — 아래 렌더 주석과 함께 해제
 import About from "./components/About";
 import Journey from "./components/Journey";
 import Skills from "./components/Skills";
@@ -91,6 +91,9 @@ export default function DohaPortfolioV11() {
         scrollTo={scrollTo}
         mode={mode}
         setMode={setMode}
+        accentKey={accentKey}
+        setAccentKey={setAccentKey}
+        cv={cv}
         menu={menu}
         setMenu={setMenu}
         pgRef={pgRef}
@@ -99,8 +102,12 @@ export default function DohaPortfolioV11() {
 
       <Intro introRef={introRef} playKey={playKey} scrollTo={scrollTo} cv={cv} accent={accent} />
 
-      {/* ============ HERO — 테마 시스템 시연 ============ */}
+      {/* ============ HERO 보관 ============
+          역할을 나눠 이식했습니다 — 액센트 스와치는 Header 드롭다운으로,
+          앰비언트 그라디언트·소셜 버튼은 About으로. 되살리려면 이 주석과
+          상단 Hero import 주석을 함께 해제하세요.
       <Hero mode={mode} accent={accent} accentKey={accentKey} setAccentKey={setAccentKey} cv={cv} />
+      */}
       <About addReveal={addReveal} />
       <Journey cv={cv} addReveal={addReveal} />
       <Skills tab={tab} setTab={setTab} addReveal={addReveal} />

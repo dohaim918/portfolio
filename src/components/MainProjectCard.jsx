@@ -1,6 +1,6 @@
 import { accentHover } from "../theme";
 import Media from "./Media";
-import ExtLink from "./ExtLink";
+import ActionLink from "./ActionLink";
 import StackTags from "./StackTags";
 
 /* 대표작 카드 — 텍스트 + 미디어. 좌우 교차 배치는 .pf-item:nth-child(even) CSS가 담당합니다. */
@@ -25,9 +25,9 @@ export default function MainProjectCard({ p, cv, addReveal }) {
         <StackTags className="pf-stack" items={p.stack} />
         <div className="pf-links">
           {p.links.map((l) => (
-            <ExtLink key={l.txt} href={l.url} {...accentHover(ac, ["color", "borderColor"])}>
+            <ActionLink key={l.txt} href={l.url} ownColor {...accentHover(ac, ["color", "borderColor"])}>
               {l.txt} ↗
-            </ExtLink>
+            </ActionLink>
           ))}
         </div>
       </div>

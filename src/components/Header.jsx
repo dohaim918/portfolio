@@ -1,4 +1,6 @@
+import { useEffect, useRef, useState } from "react";
 import { nav } from "../data/nav";
+import { accentKeys } from "../theme";
 
 function MoonIco() {
   return (
@@ -17,7 +19,63 @@ function SunIco() {
   );
 }
 
-export default function Header({ activeSec, scrollTo, mode, setMode, menu, setMenu, pgRef }) {
+/* 액센트 스와치 — theme.js 토큰을 실시간으로 바꿔보는 시연 장치.
+   색을 골라도 패널을 닫지 않습니다 — 여러 색을 연달아 눌러보는 게 시연의 핵심입니다. */
+function AccentPicker({ accentKey, setAccentKey, cv }) {
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef(null);
+  const closeTimer = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e) => { if (!wrapRef.current?.contains(e.target)) setOpen(false); };
+    const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("pointerdown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  useEffect(() => () => clearTimeout(closeTimer.current), []);
+
+  // 버튼과 패널 사이를 지나갈 때 닫히지 않도록 약간의 유예를 둡니다
+  const hold = () => clearTimeout(closeTimer.current);
+  const release = () => { closeTimer.current = setTimeout(() => setOpen(false), 160); };
+
+  return (
+    <div className="hd-ac" ref={wrapRef} onMouseEnter={() => { hold(); setOpen(true); }} onMouseLeave={release}>
+      <button
+        className="hd-sw"
+        style={{ background: cv[accentKey] }}
+        onClick={() => setOpen((v) => !v)}
+        aria-label="액센트 컬러 바꾸기"
+        aria-expanded={open}
+      />
+      <div className={`ac-pop${open ? " open" : ""}`} role="group" aria-label="액센트 컬러 선택">
+        <p className="ac-lb"><span className="tk-key">accent:</span> <span className="tk-str">'{accentKey}'</span></p>
+        <div className="ac-sws">
+          {accentKeys.map((k) => (
+            <button
+              key={k}
+              className={`tk-sw${accentKey === k ? " act" : ""}`}
+              style={{ background: cv[k] }}
+              onClick={() => setAccentKey(k)}
+              aria-label={`액센트 컬러 ${k}로 변경`}
+              aria-pressed={accentKey === k}
+              title={k}
+              tabIndex={open ? 0 : -1}
+            />
+          ))}
+        </div>
+        <p className="ac-hint">// 페이지 전체 액센트가 즉시 바뀝니다</p>
+      </div>
+    </div>
+  );
+}
+
+export default function Header({ activeSec, scrollTo, mode, setMode, accentKey, setAccentKey, cv, menu, setMenu, pgRef }) {
   return (
     <header className="hd">
       <span className="pg" aria-hidden="true"><i ref={pgRef} /></span>
@@ -33,6 +91,7 @@ export default function Header({ activeSec, scrollTo, mode, setMode, menu, setMe
               </li>
             ))}
           </ul>
+          <AccentPicker accentKey={accentKey} setAccentKey={setAccentKey} cv={cv} />
           <button
             className="th-tg"
             onClick={() => setMode(mode === "dark" ? "light" : "dark")}

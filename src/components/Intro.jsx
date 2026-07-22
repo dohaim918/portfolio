@@ -113,7 +113,7 @@ export default function Intro({ introRef, playKey, scrollTo, cv, accent }) {
         <p className="it-sub">FRONTEND · DESIGN SYSTEM · 2026</p>
       </div>
 
-      <button className="it-cue" onClick={() => scrollTo("hero")} aria-label="아래로 스크롤">
+      <button className="it-cue" onClick={() => scrollTo("about")} aria-label="아래로 스크롤">
         <em>SCROLL</em>
         <span className="cue-ms"><i /></span>
       </button>
