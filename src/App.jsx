@@ -62,8 +62,7 @@ export default function DohaPortfolioV11() {
   const accent = cv[accentKey];
 
   const addReveal = useReveal();
-  // intro·hero는 네비에 없는 id — 활성화되면 어떤 버튼과도 일치하지 않아 밑줄이 해제된다
-  const activeSec = useScrollSpy(["intro", "hero", ...navIds]);
+  const activeSec = useScrollSpy(navIds);
   const glideRef = useWheelGate({ wrapRef, introRef, pgRef });
   const { topBtn, playKey } = useIntroGate(introRef);
 
