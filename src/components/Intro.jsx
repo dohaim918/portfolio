@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-export default function Intro({ introRef, playKey, scrollTo, cv, accent }) {
+export default function Intro({ introRef, playKey, hold, scrollTo, cv, accent }) {
   const glowRef = useRef(null);
   const typoRef = useRef(null);
   const decoRef = useRef(null);
@@ -25,12 +25,14 @@ export default function Intro({ introRef, playKey, scrollTo, cv, accent }) {
 
   return (
     <section
-      className={`it${playKey > 0 ? " fast" : ""}`}
+      className={`it${playKey > 0 ? " fast" : ""}${hold ? " hold" : ""}`}
       id="intro"
       ref={introRef}
       onMouseMove={onIntroMove}
       onMouseLeave={onIntroLeave}
     >
+      {/* 좌하단 글로우만 리셋 대상 밖 — About으로 이어지는 빛이라 재진입 때 깜빡이면 흐름이 끊깁니다 */}
+      <div className="it-amb-b" />
       {/* key 리마운트로 재진입 시 애니메이션 재생 */}
       <div key={playKey} style={{ display: "contents" }}>
       <div className="it-amb" />
@@ -104,7 +106,8 @@ export default function Intro({ introRef, playKey, scrollTo, cv, accent }) {
         <h1 className="it-typo" ref={typoRef}>
           <span className="it-ln l1"><span>DESIGN</span></span>
           <span className="it-ln l2">
-            <span><i className="arw">→</i> <i className="cd">CODE</i></span>
+            {/* data-text는 글리치 레이어(::before/::after)가 같은 글자를 복제하는 데 씁니다 */}
+            <span><i className="arw">→</i> <i className="cd" data-text="CODE">CODE</i></span>
           </span>
         </h1>
         <p className="it-kr">

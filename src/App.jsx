@@ -64,7 +64,7 @@ export default function DohaPortfolioV11() {
   const addReveal = useReveal();
   const activeSec = useScrollSpy(navIds);
   const glideRef = useWheelGate({ wrapRef, introRef, pgRef });
-  const { topBtn, playKey } = useIntroGate(introRef);
+  const { topBtn, playKey, hold } = useIntroGate(introRef);
 
   /* 모바일 메뉴 열림 시 배경 스크롤 잠금 (컨테이너 기준) */
   useEffect(() => {
@@ -100,7 +100,7 @@ export default function DohaPortfolioV11() {
       />
       <MobileNav menu={menu} scrollTo={scrollTo} />
 
-      <Intro introRef={introRef} playKey={playKey} scrollTo={scrollTo} cv={cv} accent={accent} />
+      <Intro introRef={introRef} playKey={playKey} hold={hold} scrollTo={scrollTo} cv={cv} accent={accent} />
 
       {/* ============ HERO 보관 ============
           역할을 나눠 이식했습니다 — 액센트 스와치는 Header 드롭다운으로,

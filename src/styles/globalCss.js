@@ -43,6 +43,23 @@ export function buildCss({ cv, accent, mode }) {
         @keyframes itFloat{0%{transform:translateY(0);}100%{transform:translateY(-26px);}}
         @keyframes itLine{to{transform:scaleY(1);}}
         @keyframes itSpin{to{transform:rotate(360deg);}}
+        /* CODE 글리치 — 8초 주기 중 앞 4.4%(약 350ms)만 활동하고 나머지는 쉽니다.
+           steps(1)이라 키프레임 사이를 보간하지 않고 뚝뚝 끊겨 디지털한 느낌이 납니다. */
+        @keyframes cdGlA{
+          0%   {opacity:.9;clip-path:inset(10% 0 64% 0);transform:translateX(-7px);}
+          1.1% {opacity:.9;clip-path:inset(42% 0 30% 0);transform:translateX(5px);}
+          2.2% {opacity:.9;clip-path:inset(4% 0 78% 0);transform:translateX(-4px);}
+          3.3% {opacity:.9;clip-path:inset(58% 0 16% 0);transform:translateX(6px);}
+          4.4%,100%{opacity:0;transform:none;}
+        }
+        @keyframes cdGlB{
+          0%   {opacity:.85;clip-path:inset(30% 0 44% 0);transform:translateX(6px);}
+          1.1% {opacity:.85;clip-path:inset(66% 0 10% 0);transform:translateX(-5px);}
+          2.2% {opacity:.85;clip-path:inset(20% 0 58% 0);transform:translateX(4px);}
+          3.3% {opacity:.85;clip-path:inset(74% 0 4% 0);transform:translateX(-6px);}
+          4.4%,100%{opacity:0;transform:none;}
+        }
+        @keyframes cdFlick{0%,1.4%,2.6%,100%{opacity:1;}0.7%,2%{opacity:.74;}}
 
         /* ---------- intro ---------- */
         .it{position:relative;height:100dvh;min-height:620px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;}
@@ -54,10 +71,12 @@ export function buildCss({ cv, accent, mode }) {
           -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 45%,#000 30%,transparent 100%);}
         /* 인트로는 휠 게이트가 한 화면씩 넘겨 경계에 머무를 일이 없고,
            About에 도착하면 경계가 고정 헤더 뒤로 가려집니다 — 원래 값 그대로 둡니다 */
-        .it-amb{position:absolute;inset:0;pointer-events:none;opacity:0;animation:itBg 1.6s ease forwards;
-          background:radial-gradient(720px 480px at 72% 20%, ${accent}${mode === "dark" ? "1e" : "2a"}, transparent 68%),
-                     radial-gradient(560px 420px at 14% 88%, ${cv.deepPink}${mode === "dark" ? "2e" : "24"}, transparent 70%);
-          transition:background .6s ease;}
+        /* 두 글로우를 따로 둡니다 — 우상단(.it-amb)은 재진입 때 함께 다시 켜지고,
+           좌하단(.it-amb-b)은 About으로 이어지는 빛이라 끄지 않고 계속 유지합니다 */
+        .it-amb,.it-amb-b{position:absolute;inset:0;pointer-events:none;opacity:0;
+          animation:itBg 1.6s ease forwards;transition:background .6s ease;}
+        .it-amb{background:radial-gradient(720px 480px at 72% 20%, ${accent}${mode === "dark" ? "1e" : "2a"}, transparent 68%);}
+        .it-amb-b{background:radial-gradient(560px 420px at 14% 88%, ${cv.deepPink}${mode === "dark" ? "2e" : "24"}, transparent 70%);}
         .it-glow{position:absolute;top:0;left:0;width:560px;height:560px;border-radius:50%;pointer-events:none;
           background:radial-gradient(circle, ${accent}${mode === "dark" ? "17" : "20"} 0%, transparent 62%);
           transition:transform .18s ease-out,background .5s;will-change:transform;}
@@ -86,6 +105,21 @@ export function buildCss({ cv, accent, mode }) {
         .it-ln.l2 span{animation-delay:.78s,.78s;}
         .it-ln.l2 .arw{display:inline-block;color:var(--accent);transition:color .3s;}
         .it-ln.l2 .cd{background:linear-gradient(94deg,var(--accent),${cv.lavender});-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.18em;}
+        /* ---------- CODE 글리치 ----------
+           디자인이 코드로 '컴파일되는' 순간을 표현합니다. 장식이 아니라 의미라
+           DESIGN(설계도 상태)은 건드리지 않고 CODE에만 겁니다.
+           두 겹을 그라디언트 양 끝 색(액센트·lavender)으로 어긋나게 겹쳐 색수차를 냅니다.
+           transform·clip-path·opacity만 움직여 GPU에서 처리되고,
+           reduced-motion은 전역 .wrap * 규칙이 이미 꺼줍니다. */
+        .it-ln.l2 .cd{position:relative;display:inline-block;animation:cdFlick 8s steps(1) 1.9s infinite;}
+        .it-ln.l2 .cd::before,.it-ln.l2 .cd::after{
+          /* "/ ''" 는 대체 텍스트를 비워 스크린리더에서 감춥니다 —
+             없으면 제목이 "DESIGN → CODE CODE CODE"로 읽힙니다.
+             미지원 브라우저에서는 선언 전체가 무시돼 글리치만 빠지므로 안전합니다. */
+          content:attr(data-text) / "";position:absolute;left:0;top:0;padding-right:.18em;
+          pointer-events:none;opacity:0;}
+        .it-ln.l2 .cd::before{color:var(--accent);animation:cdGlA 8s steps(1) 1.9s infinite;}
+        .it-ln.l2 .cd::after{color:${cv.lavender};animation:cdGlB 8s steps(1) 1.9s infinite;}
         .it-kr{position:relative;padding-left:18px;opacity:0;animation:itFade .8s ease 1.4s forwards;font-size:clamp(17px,2.2vw,24px);font-weight:700;color:var(--sub);margin-top:38px;word-break:keep-all;}
         .it-kr::before{content:"";position:absolute;left:0;top:5px;bottom:5px;width:2.5px;background:var(--accent);transform:scaleY(0);transform-origin:top;animation:itLine .5s ease 1.55s forwards;transition:background .3s;}
         .it-kr strong{color:var(--main);}
@@ -101,15 +135,28 @@ export function buildCss({ cv, accent, mode }) {
 
         /* 재진입 축약 리플레이 — 타이핑 생략, 딜레이 단축 */
         .it.fast .it-amb,.it.fast .it-grid{animation-delay:0s;}
-        .it.fast .dec-in{animation-delay:.15s,2s;}
-        .it.fast .it-type i{animation:none;width:36ch;}
-        .it.fast .it-ln.l1 span{animation-delay:.08s,.08s;}
-        .it.fast .it-ln.l2 span{animation-delay:.26s,.26s;}
-        .it.fast .it-kr{animation-delay:.6s;}
-        .it.fast .it-kr::before{animation-delay:.75s;}
-        .it.fast .it-sub{animation-delay:.75s;}
-        .it.fast .it-cue{animation-delay:.9s;}
-        .it.fast .it-dot{animation-delay:.5s,.5s;}
+        .it.fast .dec-in{animation-delay:.08s,1.2s;}
+        /* 41행 키프레임의 최종 폭과 반드시 같아야 합니다 — 여기만 1.44em을 빼면
+           리플레이 때 마지막 글자가 잘립니다(letter-spacing 누적분이 ch에 안 잡힘) */
+        .it.fast .it-type i{animation:none;width:calc(36ch + 1.44em);}
+        .it.fast .it-ln.l1 span{animation-delay:.04s,.04s;}
+        /* 인트로가 화면 밖에 있는 동안 재생을 멈춰 둡니다.
+           모든 등장 요소의 기본 상태가 '숨김'(opacity:0 / translateY(110%) / width:0)이라,
+           시작 전에 멈추면 그대로 안 보이는 상태로 대기합니다.
+           좌하단 글로우만 제외 — 계속 켜져 있어야 About으로 이어지는 흐름이 유지됩니다. */
+        .it.hold *:not(.it-amb-b){animation-play-state:paused !important;}
+        .it.fast .it-ln.l2 span{animation-delay:.14s,.14s;}
+        /* 리플레이는 등장이 빨라지므로 글리치도 앞당깁니다 (등장 완료 직후) */
+        .it.fast .it-ln.l2 .cd,
+        .it.fast .it-ln.l2 .cd::before,
+        .it.fast .it-ln.l2 .cd::after{animation-delay:.8s;}
+        .it.fast .it-kr{animation-delay:.32s;}
+        .it.fast .it-kr::before{animation-delay:.42s;}
+        .it.fast .it-sub{animation-delay:.42s;}
+        .it.fast .it-cue{animation-delay:.52s;}
+        .it.fast .it-dot{animation-delay:.28s,.28s;}
+        /* 리플레이는 등장 자체도 짧게 — 이미 본 화면이라 기다리는 느낌이 없어야 합니다 */
+        .it.fast .it-ln span{animation-duration:.62s,.72s;}
 
         /* 공통 프레스 상태 — 라인 버튼 체계 */
         .btn:active,.sk-tab:active,.sub-filters button:active,.top-btn:active,.th-tg:active{transform:scale(.97);}
