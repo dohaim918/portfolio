@@ -7,7 +7,7 @@ export default function Contact() {
       <div className="ft-bg" />
       <div className="inner">
         <h2 className="ft-ttl">LET'S BUILD<br /><b>SOMETHING BRIGHT</b></h2>
-        <p>함께 작업하고 싶거나 더 많은 정보가 필요하다면, 언제든 연락 주세요. 새로운 기회를 기다리고 있습니다.</p>
+        <p>화면의 감각과 코드의 구조를 함께 고민합니다. 어제보다 나은 결과물을 위해 계속 배우고 성장하는 개발자 김도하입니다.</p>
         <div className="ft-links">
           <ActionLink href={social.mail} size="lg" pri external={false}>MAIL — {mailAddr}</ActionLink>
           <ActionLink href={social.github} size="lg">GITHUB ↗</ActionLink>

@@ -68,6 +68,8 @@ export const projects = [
     img: "/hwaseong.jpg",
     imgLabel: "MAIN VISUAL",
   },
+  /* 보관 — 서브 프로젝트에서 잠시 내렸습니다. 되살리려면 주석만 해제하세요.
+     (Journey의 "반복을 시스템으로" 항목은 성장 기록이라 그대로 둡니다)
   {
     type: "sub",
     category: "personal",
@@ -77,6 +79,7 @@ export const projects = [
     stack: ["Vite", "React", "Emotion"],
     url: "https://github.com/dohaim918/react-base-template",
   },
+  */
   {
     type: "sub",
     category: "personal",
