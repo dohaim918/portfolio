@@ -1,13 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 import { theme, accentKeys } from "./theme";
 import { buildCss } from "./styles/globalCss";
-import { nav, navIds } from "./data/nav";
+import { navIds } from "./data/nav";
 import { journey } from "./data/journey";
 import { skillTabs } from "./data/skills";
 import { projects, subFilters } from "./data/projects";
 import { useReveal } from "./hooks/useReveal";
 import { useScrollSpy } from "./hooks/useScrollSpy";
 import { useWheelGate } from "./hooks/useWheelGate";
+import Media, { PrMedia } from "./components/Media";
+import Header from "./components/Header";
+import MobileNav from "./components/MobileNav";
+import Contact from "./components/Contact";
+import TopButton from "./components/TopButton";
 
 /* ============================================================
    DOHA KIM — PORTFOLIO v11
@@ -41,77 +46,6 @@ import { useWheelGate } from "./hooks/useWheelGate";
    ============================================================ */
 
 /* ---------------- 서브 컴포넌트 ---------------- */
-
-function MoonIco() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z" />
-    </svg>
-  );
-}
-
-function SunIco() {
-  return (
-    <svg viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="4.2" />
-      <path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" />
-    </svg>
-  );
-}
-
-function Media({ img, label, accent, url, ratio = "16 / 10" }) {
-  /* 프로젝트 미디어 — img가 null이면 placeholder, 경로를 넣으면 실제 스크린샷.
-     호버: 이미지 줌 + 액센트 오버레이 + VIEW PROJECT CTA. 전체가 라이브 링크. */
-  const body = (
-    <>
-      <div className="md-bar">
-        <i style={{ background: accent }} /><i /><i />
-        <em>{label}</em>
-      </div>
-      <div className="md-bd" style={{ aspectRatio: ratio }}>
-        {img ? (
-          <img src={img} alt={label} loading="lazy" />
-        ) : (
-          <div className="md-ph">
-            <span style={{ color: accent }}>▨</span>
-            <em>{label}</em>
-            <small>이미지 교체 예정 · img 필드에 경로 입력</small>
-          </div>
-        )}
-        {/* 액센트 오버레이 — 특수 그라디언트값은 인라인 유지 */}
-        <div className="md-ov" style={{ background: `linear-gradient(180deg, transparent 42%, ${accent}d9 100%)` }}>
-          <span className="md-cta">VIEW PROJECT ↗</span>
-        </div>
-      </div>
-    </>
-  );
-  return url ? (
-    <a className="md-frm" href={url} target="_blank" rel="noreferrer" aria-label={`${label} 프로젝트 보기`}>
-      {body}
-    </a>
-  ) : (
-    <div className="md-frm">{body}</div>
-  );
-}
-
-function PrMedia({ img }) {
-  /* 프로필 — 액센트 오프셋 프레임. 호버 시 사진과 프레임이 정렬됨. */
-  return (
-    <div className="pr-frm">
-      <div className="pr-bd">
-        {img ? (
-          <img src={img} alt="김도하 프로필" loading="lazy" />
-        ) : (
-          <div className="md-ph">
-            <span>▨</span>
-            <em>PROFILE IMAGE · 4:5</em>
-            <small>이미지 교체 예정</small>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
 
 export default function DohaPortfolioV11() {
   const [mode, setMode] = useState("dark");
@@ -199,68 +133,16 @@ export default function DohaPortfolioV11() {
     <div className="wrap" ref={wrapRef}>
       <style>{buildCss({ cv, accent, mode })}</style>
 
-      {/* ============ HEADER ============ */}
-      <header className="hd">
-        <span className="pg" aria-hidden="true"><i ref={pgRef} /></span>
-        <div className="inner">
-          <button className="logo" onClick={() => scrollTo("intro")}>DOHA<em>.</em>DEV</button>
-          <div className="hd-r">
-            <ul className="gnb">
-              {nav.map((n) => (
-                <li key={n.id}>
-                  <button className={activeSec === n.id ? "act" : ""} onClick={() => scrollTo(n.id)}>
-                    <i>{n.no}.</i>{n.txt}
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <button
-              className="th-tg"
-              onClick={() => setMode(mode === "dark" ? "light" : "dark")}
-              role="switch"
-              aria-checked={mode === "light"}
-              aria-label={`${mode === "dark" ? "라이트" : "다크"} 테마로 전환`}
-            >
-              {/* 트랙 위 고정 아이콘 — 썸에 가려진 쪽은 숨김 */}
-              <span className={`th-ico l${mode === "dark" ? " hide" : ""}`} aria-hidden="true">
-                <MoonIco />
-              </span>
-              <span className={`th-ico r${mode === "light" ? " hide" : ""}`} aria-hidden="true">
-                <SunIco />
-              </span>
-              {/* 슬라이딩 썸 — 현재 모드 아이콘 */}
-              <span className="th-thumb" aria-hidden="true">
-                {mode === "dark" ? <MoonIco /> : <SunIco />}
-              </span>
-            </button>
-            <button
-              className={`hbg${menu ? " open" : ""}`}
-              onClick={() => setMenu(!menu)}
-              aria-label={menu ? "메뉴 닫기" : "메뉴 열기"}
-              aria-expanded={menu}
-            >
-              <span /><span /><span />
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* ============ MOBILE NAV ============ */}
-      <nav className={`mnav${menu ? " open" : ""}`} aria-hidden={!menu}>
-        <ul>
-          {nav.map((n) => (
-            <li key={n.id}>
-              <button onClick={() => scrollTo(n.id)} tabIndex={menu ? 0 : -1}>
-                <i>{n.no}</i>{n.txt}
-              </button>
-            </li>
-          ))}
-        </ul>
-        <div className="mnav-ft">
-          <a href="https://github.com/dohaim918" target="_blank" rel="noreferrer">GITHUB</a>
-          <a href="mailto:nzspave1121@gmail.com">MAIL</a>
-        </div>
-      </nav>
+      <Header
+        activeSec={activeSec}
+        scrollTo={scrollTo}
+        mode={mode}
+        setMode={setMode}
+        menu={menu}
+        setMenu={setMenu}
+        pgRef={pgRef}
+      />
+      <MobileNav menu={menu} scrollTo={scrollTo} />
 
       {/* ============ INTRO (fullscreen) ============ */}
       <section
@@ -584,29 +466,8 @@ export default function DohaPortfolioV11() {
       </section>
 
       {/* ============ 05. CONTACT ============ */}
-      <footer className="ft" id="contact">
-        <div className="ft-bg" />
-        <div className="inner">
-          <h2 className="ft-ttl">LET'S BUILD<br /><b>SOMETHING BRIGHT</b></h2>
-          <p>함께 작업하고 싶거나 더 많은 정보가 필요하다면, 언제든 연락 주세요. 새로운 기회를 기다리고 있습니다.</p>
-          <div className="ft-links">
-            <a className="pri" href="mailto:nzspave1121@gmail.com">MAIL — nzspave1121@gmail.com</a>
-            <a href="https://github.com/dohaim918" target="_blank" rel="noreferrer">GITHUB ↗</a>
-            <a href="https://www.instagram.com/speiq_kskw" target="_blank" rel="noreferrer">INSTAGRAM ↗</a>
-          </div>
-          <p className="ft-copy">© 2026 DOHA KIM · DESIGN TO CODE · PORTFOLIO v11</p>
-        </div>
-      </footer>
-
-      {/* ============ TOP BUTTON — 인트로 벗어나면 등장 ============ */}
-      <button
-        className={`top-btn${topBtn ? " show" : ""}`}
-        onClick={() => scrollTo("intro")}
-        aria-label="맨 위로 이동"
-        tabIndex={topBtn ? 0 : -1}
-      >
-        <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7" /></svg>
-      </button>
+      <Contact />
+      <TopButton topBtn={topBtn} scrollTo={scrollTo} />
     </div>
   );
 }
