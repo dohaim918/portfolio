@@ -22,7 +22,8 @@ export function buildCss({ cv, accent, mode }) {
         button{font-family:inherit;}
         ::selection{background:var(--accent);color:var(--bg);}
 
-        .rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease;}
+        /* 이동 거리를 26 → 44px로 늘리고 이징을 살짝 되튀게 잡아 등장이 읽히도록 했습니다 */
+        .rv{opacity:0;transform:translateY(44px);transition:opacity .75s ease,transform .85s cubic-bezier(.22,.9,.28,1);}
         .rv.on{opacity:1;transform:none;}
         @media (prefers-reduced-motion: reduce){
           .rv{opacity:1;transform:none;transition:none;}
