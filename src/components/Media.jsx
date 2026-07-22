@@ -1,6 +1,8 @@
 export default function Media({ img, label, accent, url, ratio = "16 / 10" }) {
   /* 프로젝트 미디어 — img가 null이면 placeholder, 경로를 넣으면 실제 스크린샷.
      호버: 이미지 줌 + 액센트 오버레이 + VIEW PROJECT CTA. 전체가 라이브 링크. */
+  /* 글로우는 호버 시 부상하는 .md-frm 자신에게 — 래퍼에 두면 카드만 뜨고 그림자가 제자리에 남는다 */
+  const glow = { boxShadow: `0 30px 80px -40px ${accent}55` };
   const body = (
     <>
       <div className="md-bar">
@@ -25,11 +27,11 @@ export default function Media({ img, label, accent, url, ratio = "16 / 10" }) {
     </>
   );
   return url ? (
-    <a className="md-frm" href={url} target="_blank" rel="noreferrer" aria-label={`${label} 프로젝트 보기`}>
+    <a className="md-frm" style={glow} href={url} target="_blank" rel="noreferrer" aria-label={`${label} 프로젝트 보기`}>
       {body}
     </a>
   ) : (
-    <div className="md-frm">{body}</div>
+    <div className="md-frm" style={glow}>{body}</div>
   );
 }
 

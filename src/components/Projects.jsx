@@ -46,7 +46,7 @@ export default function Projects({ cv, filter, setFilter, addReveal }) {
                   ))}
                 </div>
               </div>
-              <div className="pf-media" style={{ boxShadow: `0 30px 80px -40px ${cv[p.accent]}55`, borderRadius: 14 }}>
+              <div className="pf-media">
                 <Media
                   img={p.img}
                   label={p.imgLabel}
