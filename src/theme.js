@@ -43,8 +43,10 @@ export const accentKeys = ["violet", "pink", "green", "sky", "lavender"];
 export const alpha = (color, aa) => `${color}${aa}`;
 
 /* 프로젝트별 액센트 호버 — 전역 --accent가 아닌 개별 색이라 CSS가 아닌 JS로 걸립니다.
-   반환값을 요소에 그대로 펼쳐 넣으면 마우스 진입 시 색이 붙고 이탈 시 원래대로 돌아갑니다. */
-export const accentHover = (color, props = ["borderColor"]) => ({
+   반환값을 요소에 그대로 펼쳐 넣으면 마우스 진입 시 색이 붙습니다.
+   rest에 값을 주면 이탈 시 그 값으로 돌아갑니다 — 평상시에도 색을 띠는
+   대표 링크처럼, 빈 문자열로 지우면 안 되는 경우에 씁니다. */
+export const accentHover = (color, props = ["borderColor"], rest = {}) => ({
   onMouseEnter: (e) => props.forEach((p) => (e.currentTarget.style[p] = color)),
-  onMouseLeave: (e) => props.forEach((p) => (e.currentTarget.style[p] = "")),
+  onMouseLeave: (e) => props.forEach((p) => (e.currentTarget.style[p] = rest[p] ?? "")),
 });
