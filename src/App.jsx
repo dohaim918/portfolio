@@ -1,16 +1,17 @@
 import { useState, useEffect, useRef } from "react";
-import { theme, accentKeys } from "./theme";
+import { theme } from "./theme";
 import { buildCss } from "./styles/globalCss";
 import { navIds } from "./data/nav";
-import { journey } from "./data/journey";
-import { skillTabs } from "./data/skills";
-import { projects, subFilters } from "./data/projects";
 import { useReveal } from "./hooks/useReveal";
 import { useScrollSpy } from "./hooks/useScrollSpy";
 import { useWheelGate } from "./hooks/useWheelGate";
-import Media, { PrMedia } from "./components/Media";
 import Header from "./components/Header";
 import MobileNav from "./components/MobileNav";
+import Hero from "./components/Hero";
+import About from "./components/About";
+import Journey from "./components/Journey";
+import Skills from "./components/Skills";
+import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import TopButton from "./components/TopButton";
 
@@ -126,8 +127,6 @@ export default function DohaPortfolioV11() {
     else sc.scrollTop = top;
   };
 
-  const mains = projects.filter((p) => p.type === "main");
-  const subs = projects.filter((p) => p.type === "sub" && (filter === "all" || p.category === filter));
 
   return (
     <div className="wrap" ref={wrapRef}>
@@ -242,230 +241,11 @@ export default function DohaPortfolioV11() {
       </section>
 
       {/* ============ HERO — 테마 시스템 시연 ============ */}
-      <section className="hero" id="hero">
-        <div className="hero-bg" />
-        <div className="inner">
-          <div>
-            <p className="hero-hello">// this page itself is a theme system</p>
-            <h2 className="hero-ttl">
-              지금 보고 계신 이 페이지도<br />
-              <span className="grad">하나의 테마 시스템</span>으로 움직입니다.
-            </h2>
-            <p className="hero-desc">
-              색·폰트·간격이 <strong>theme.js 토큰 하나</strong>로 관리됩니다.
-              오른쪽 스와치와 상단 토글을 눌러보세요 — 다크·라이트 반전과
-              액센트 교체가 즉시 일어납니다.
-            </p>
-            <div className="hero-sns">
-              <a href="https://github.com/dohaim918" target="_blank" rel="noreferrer">GITHUB ↗</a>
-              <a href="https://www.instagram.com/speiq_kskw" target="_blank" rel="noreferrer">INSTAGRAM ↗</a>
-              <a href="mailto:nzspave1121@gmail.com">MAIL ↗</a>
-            </div>
-          </div>
-
-          {/* Signature — 살아있는 theme.js 토큰 카드 */}
-          <div className="tk-card" aria-label="테마 토큰 카드 — 스와치를 누르면 페이지 액센트가 바뀝니다">
-            <div className="tk-bar"><i /><i /><i /></div>
-            <div><span className="tk-key">const </span>doha <span className="tk-key">= {"{"}</span></div>
-            <div style={{ paddingLeft: "2ch" }}>
-              <span className="tk-key">role:</span> <span className="tk-str">'Design-to-Code'</span>,
-            </div>
-            <div style={{ paddingLeft: "2ch" }}>
-              <span className="tk-key">mode:</span> <span className="tk-str">'{mode}'</span>,
-            </div>
-            <div style={{ paddingLeft: "2ch" }}>
-              <span className="tk-key">accent:</span>{" "}
-              <span className="tk-str" style={{ color: accent, transition: "color .3s" }}>'{accent}'</span>,
-            </div>
-            <div className="tk-swatches">
-              {accentKeys.map((k) => (
-                <button
-                  key={k}
-                  className={`tk-sw${accentKey === k ? " act" : ""}`}
-                  style={{ background: cv[k] }}
-                  onClick={() => setAccentKey(k)}
-                  aria-label={`액센트 컬러 ${k}로 변경`}
-                  title={k}
-                />
-              ))}
-            </div>
-            <div><span className="tk-key">{"}"}</span></div>
-            <p className="tk-hint">// 스와치와 상단 토글을 눌러보세요 — 테마 시스템이 실시간으로 반전됩니다</p>
-          </div>
-        </div>
-      </section>
-
-      {/* ============ 01. ABOUT ============ */}
-      <section className="sec" id="about">
-        <div className="inner">
-          <div className="sec-ttl rv" ref={addReveal}>
-            <span className="lb">ABOUT ME</span>
-            <span className="no">01</span>
-            <h2>단순히 예쁜 화면이 아닌, 개발 가능한 구조를 설계합니다</h2>
-          </div>
-          <div className="ab-grid">
-            <div className="ab-txt rv" ref={addReveal}>
-              <p>
-                디자인 툴에서 개발로 넘어온 만큼, <strong>화면의 균형감과 정보의 흐름</strong>을
-                코드 구조만큼 중요하게 다룹니다. Photoshop · Illustrator · After Effects의
-                감각은 그대로 인터랙션과 비주얼 디테일로 이어집니다.
-              </p>
-              <p>
-                PULSE에서 <strong>전체 테마 디자인 시스템</strong>을, flowdash에서
-                <strong> 디자인 총괄과 핵심 로직</strong>을 맡았고, 반복되는 스타일 작업은
-                직접 만든 theme.js 스타터킷으로 시스템화했습니다. 지금은 화성야화 웹을
-                기획부터 구현까지 단독으로 진행하고 있습니다.
-              </p>
-              <p className="ab-quote">"Step by step, I'm learning and improving."</p>
-            </div>
-            <div className="rv" ref={addReveal}>
-              <PrMedia img={null} />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============ 02. JOURNEY ============ */}
-      <section className="sec" id="journey">
-        <div className="inner">
-          <div className="sec-ttl rv" ref={addReveal}>
-            <span className="lb">JOURNEY</span>
-            <span className="no">02</span>
-            <h2>여섯 달의 기록, 다섯 번의 성장</h2>
-          </div>
-          <div className="jn-list">
-            {journey.map((j) => (
-              <div className="jn-item rv" key={j.date} ref={addReveal}>
-                <span className="jn-dot" style={{ borderColor: cv[j.accent] }} />
-                <p className="jn-date">{j.date}</p>
-                <h3 className="jn-ttl">
-                  {j.ttl}
-                  <span className="jn-tag" style={{ color: cv[j.accent], borderColor: `${cv[j.accent]}55` }}>{j.tag}</span>
-                </h3>
-                <p>{j.txt}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============ 03. SKILLS ============ */}
-      <section className="sec" id="skills">
-        <div className="inner">
-          <div className="sec-ttl rv" ref={addReveal}>
-            <span className="lb">SKILLS</span>
-            <span className="no">03</span>
-            <h2>쓸 수 있는 것보다, 해본 것을 씁니다</h2>
-          </div>
-          <div className="sk-tabs rv" ref={addReveal} role="tablist" aria-label="스킬 카테고리">
-            {Object.keys(skillTabs).map((k) => (
-              <button key={k} className={`sk-tab${tab === k ? " act" : ""}`} onClick={() => setTab(k)} role="tab" aria-selected={tab === k}>
-                {k}
-              </button>
-            ))}
-          </div>
-          <div className="sk-list" role="tabpanel">
-            {skillTabs[tab].map((s) => (
-              <div className="sk-item" key={s.name}>
-                <h3>{s.name}</h3>
-                <p>{s.txt}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============ 04. PROJECTS ============ */}
-      <section className="sec" id="projects">
-        <div className="inner">
-          <div className="sec-ttl rv" ref={addReveal}>
-            <span className="lb">MAIN PROJECTS</span>
-            <span className="no">04</span>
-            <h2>세 개의 대표작, 세 가지 색</h2>
-          </div>
-
-          <div className="pf-list">
-            {mains.map((p) => (
-              <article className="pf-item rv" key={p.num} ref={addReveal}>
-                <div className="pf-txt">
-                  <span className="pf-lb" style={{ color: cv[p.accent] }}>{p.label}</span>
-                  <h3 className="pf-name"><span className="pf-num">{p.num}</span>{p.name}</h3>
-                  <p className="pf-meta">{p.period}<br />{p.team}</p>
-                  <p className="pf-desc">{p.desc}</p>
-                  <ul className="pf-role">
-                    {p.role.map((r, i) => (
-                      <li key={i}>
-                        <i style={{ position: "absolute", left: 0, top: 10, width: 7, height: 2, background: cv[p.accent] }} />
-                        {r}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="pf-stack">{p.stack.map((s) => <span key={s}>{s}</span>)}</div>
-                  <div className="pf-links">
-                    {p.links.map((l) => (
-                      <a
-                        key={l.txt}
-                        href={l.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        onMouseEnter={(e) => { e.currentTarget.style.color = cv[p.accent]; e.currentTarget.style.borderColor = cv[p.accent]; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.color = ""; e.currentTarget.style.borderColor = ""; }}
-                      >
-                        {l.txt} ↗
-                      </a>
-                    ))}
-                  </div>
-                </div>
-                <div className="pf-media" style={{ boxShadow: `0 30px 80px -40px ${cv[p.accent]}55`, borderRadius: 14 }}>
-                  <Media
-                    img={p.img}
-                    label={p.imgLabel}
-                    accent={cv[p.accent]}
-                    url={p.links[0]?.url}
-                  />
-                </div>
-              </article>
-            ))}
-          </div>
-
-          {/* Sub Projects — 필터 + 확장 슬롯 */}
-          <div className="sub-hd rv" ref={addReveal}>
-            <h3 className="sub-ttl">SUB PROJECTS</h3>
-            <div className="sub-filters" role="tablist" aria-label="프로젝트 필터">
-              {subFilters.map((f) => (
-                <button key={f.key} className={filter === f.key ? "act" : ""} onClick={() => setFilter(f.key)} role="tab" aria-selected={filter === f.key}>
-                  {f.txt}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="sub-grid">
-            {subs.map((s) => (
-              <a
-                className="sub-card"
-                key={s.name}
-                href={s.url}
-                target="_blank"
-                rel="noreferrer"
-                style={{ boxShadow: `0 20px 60px -40px ${cv[s.accent]}55` }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${cv[s.accent]}66`)}
-                onMouseLeave={(e) => (e.currentTarget.style.borderColor = "")}
-              >
-                <h3>{s.name}<i>↗</i></h3>
-                <p className="sub-cat">{s.category.toUpperCase()}</p>
-                <p>{s.txt}</p>
-                <div className="sub-stack">{s.stack.map((t) => <span key={t}>{t}</span>)}</div>
-              </a>
-            ))}
-            <div className="sub-card sub-next" aria-hidden="true">
-              <b>+ NEXT WORK</b>
-              <p>다음 작업이 이 자리에 추가됩니다</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ============ 05. CONTACT ============ */}
+      <Hero mode={mode} accent={accent} accentKey={accentKey} setAccentKey={setAccentKey} cv={cv} />
+      <About addReveal={addReveal} />
+      <Journey cv={cv} addReveal={addReveal} />
+      <Skills tab={tab} setTab={setTab} addReveal={addReveal} />
+      <Projects cv={cv} filter={filter} setFilter={setFilter} addReveal={addReveal} />
       <Contact />
       <TopButton topBtn={topBtn} scrollTo={scrollTo} />
     </div>
