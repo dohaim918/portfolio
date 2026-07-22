@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { theme, accentKeys } from "./theme";
 import { buildCss } from "./styles/globalCss";
-import { nav } from "./data/nav";
+import { nav, navIds } from "./data/nav";
 import { journey } from "./data/journey";
 import { skillTabs } from "./data/skills";
 import { projects, subFilters } from "./data/projects";
+import { useReveal } from "./hooks/useReveal";
+import { useScrollSpy } from "./hooks/useScrollSpy";
+import { useWheelGate } from "./hooks/useWheelGate";
 
 /* ============================================================
    DOHA KIM — PORTFOLIO v11
@@ -116,13 +119,10 @@ export default function DohaPortfolioV11() {
   const [tab, setTab] = useState("Language");
   const [filter, setFilter] = useState("all");
   const [menu, setMenu] = useState(false);
-  const [activeSec, setActiveSec] = useState("");
   const [topBtn, setTopBtn] = useState(false);
   const [playKey, setPlayKey] = useState(0); // 인트로 리플레이 트리거 (0 = 첫 로드 풀 시퀀스)
-  const revealRefs = useRef([]);
   const wrapRef = useRef(null);   // 페이지 스크롤 컨테이너
   const pgRef = useRef(null);     // 헤더 프로그레스 바
-  const glideRef = useRef(null);  // 공용 글라이드 (모든 프로그램 스크롤이 이 하나만 사용)
   const introRef = useRef(null);
   const glowRef = useRef(null);
   const typoRef = useRef(null);
@@ -149,134 +149,9 @@ export default function DohaPortfolioV11() {
   const cv = theme.colors[mode];
   const accent = cv[accentKey];
 
-  useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add("on")),
-      { threshold: 0.1 }
-    );
-    revealRefs.current.forEach((el) => el && io.observe(el));
-    return () => io.disconnect();
-  }, []);
-
-  /* 인트로 휠 게이트 + 프로그레스 바.
-     인트로 구간에서는 네이티브 스크롤을 완전히 차단하고
-     휠/스와이프 제스처 1회 = 커스텀 rAF 글라이드 한 화면 이동.
-     네이티브 관성과 충돌할 여지가 없어 끊김이 발생하지 않음.
-     스크롤바 드래그·키보드 등 비휠 입력은 정지 후 보정으로 커버. */
-  useEffect(() => {
-    const sc = wrapRef.current;
-    if (!sc) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let gliding = false;
-    let cool = 0;              // 글라이드 직후 관성 흡수 쿨다운
-    let lastY = sc.scrollTop;
-    let dir = 0;
-    let t;
-    let anim = null;
-    let raf = null;
-    let tStartY = null;
-    let tFired = false;
-
-    const ih = () => introRef.current?.offsetHeight || sc.clientHeight;
-
-    const glide = (to) => {
-      if (anim) cancelAnimationFrame(anim);
-      if (reduce) { sc.scrollTop = to; gliding = false; return; }
-      const from = sc.scrollTop;
-      const dist = to - from;
-      if (Math.abs(dist) < 2) return;
-      const dur = 600;
-      const st = performance.now();
-      const ease = (x) => 1 - Math.pow(1 - x, 3);
-      gliding = true;
-      const step = (now) => {
-        const p = Math.min((now - st) / dur, 1);
-        sc.scrollTop = from + dist * ease(p);
-        if (p < 1) anim = requestAnimationFrame(step);
-        else {
-          anim = null;
-          gliding = false;
-          cool = performance.now() + 280; // 잔여 관성 흡수
-        }
-      };
-      anim = requestAnimationFrame(step);
-    };
-    glideRef.current = glide;
-
-    /* 휠 게이트 — 인트로 구간 한정 */
-    const onWheel = (e) => {
-      const y = sc.scrollTop;
-      const H = ih();
-      const inZone = y < H - 4;
-      if (gliding || performance.now() < cool) {
-        if (inZone || y <= H + 4) e.preventDefault(); // 글라이드 중 관성 흡수
-        return;
-      }
-      const d = e.deltaMode === 1 ? e.deltaY * 33 : e.deltaY;
-      if (d > 12 && inZone) {
-        e.preventDefault();
-        glide(H);               // 아래로 — 히어로 완결
-      } else if (d < -12 && y > 0 && y <= H + 4) {
-        e.preventDefault();
-        glide(0);               // 위로 — 인트로 복귀
-      }
-    };
-
-    /* 터치 게이트 */
-    const onTouchStart = (e) => {
-      tStartY = e.touches[0].clientY;
-      tFired = false;
-    };
-    const onTouchMove = (e) => {
-      if (tStartY == null) return;
-      const y = sc.scrollTop;
-      const H = ih();
-      if (y >= H - 4) return;   // 인트로 밖 — 네이티브
-      if (gliding || tFired) { e.preventDefault(); return; }
-      const d = tStartY - e.touches[0].clientY; // +아래로
-      e.preventDefault();
-      if (d > 26) { tFired = true; glide(H); }
-      else if (d < -26 && y > 0) { tFired = true; glide(0); }
-    };
-
-    /* 스크롤 — 프로그레스 바 + 비휠 입력용 정지 보정 */
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(() => {
-        raf = null;
-        if (pgRef.current) {
-          const max = sc.scrollHeight - sc.clientHeight;
-          pgRef.current.style.transform = `scaleX(${max > 0 ? sc.scrollTop / max : 0})`;
-        }
-      });
-      const y = sc.scrollTop;
-      if (!gliding) dir = y > lastY ? 1 : y < lastY ? -1 : dir;
-      lastY = y;
-      if (gliding) return;
-      clearTimeout(t);
-      t = setTimeout(() => {
-        const H = ih();
-        const y2 = sc.scrollTop;
-        if (gliding || y2 <= 8 || y2 >= H - 8) return;
-        if (dir >= 0) glide(H);
-        else glide(0);
-      }, 160);
-    };
-
-    sc.addEventListener("wheel", onWheel, { passive: false });
-    sc.addEventListener("touchstart", onTouchStart, { passive: true });
-    sc.addEventListener("touchmove", onTouchMove, { passive: false });
-    sc.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      sc.removeEventListener("wheel", onWheel);
-      sc.removeEventListener("touchstart", onTouchStart);
-      sc.removeEventListener("touchmove", onTouchMove);
-      sc.removeEventListener("scroll", onScroll);
-      clearTimeout(t);
-      if (anim) cancelAnimationFrame(anim);
-      if (raf) cancelAnimationFrame(raf);
-      glideRef.current = null;
-    };
-  }, []);
+  const addReveal = useReveal();
+  const activeSec = useScrollSpy(navIds);
+  const glideRef = useWheelGate({ wrapRef, introRef, pgRef });
 
   /* 인트로 가시성 — 벗어나면 TOP 버튼, 재진입하면 축약 리플레이 */
   useEffect(() => {
@@ -302,27 +177,11 @@ export default function DohaPortfolioV11() {
     return () => ob.disconnect();
   }, []);
 
-  /* 스크롤 스파이 — 현재 섹션을 네비에 하이라이트 */
-  useEffect(() => {
-    const spy = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && setActiveSec(e.target.id)),
-      { rootMargin: "-40% 0px -55% 0px" }
-    );
-    nav.forEach((n) => {
-      const el = document.getElementById(n.id);
-      if (el) spy.observe(el);
-    });
-    return () => spy.disconnect();
-  }, []);
-
   /* 모바일 메뉴 열림 시 배경 스크롤 잠금 (컨테이너 기준) */
   useEffect(() => {
     if (wrapRef.current) wrapRef.current.style.overflowY = menu ? "hidden" : "auto";
   }, [menu]);
 
-  const addReveal = (el) => {
-    if (el && !revealRefs.current.includes(el)) revealRefs.current.push(el);
-  };
   const scrollTo = (id) => {
     setMenu(false);
     const sc = wrapRef.current;
