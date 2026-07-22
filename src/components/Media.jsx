@@ -1,6 +1,6 @@
 import { alpha } from "../theme";
 
-export default function Media({ img, label, accent, url, ratio = "16 / 10" }) {
+export default function Media({ img, label, accent, url, mode = "dark", ratio = "16 / 10" }) {
   /* 프로젝트 미디어 — img가 null이면 placeholder, 경로를 넣으면 실제 스크린샷.
      호버: 이미지 줌 + 액센트 오버레이 + VIEW PROJECT CTA. 전체가 라이브 링크. */
   /* 글로우는 호버 시 부상하는 .md-frm 자신에게 — 래퍼에 두면 카드만 뜨고 그림자가 제자리에 남는다 */
@@ -22,7 +22,8 @@ export default function Media({ img, label, accent, url, ratio = "16 / 10" }) {
           </div>
         )}
         {/* 액센트 오버레이 — 특수 그라디언트값은 인라인 유지 */}
-        <div className="md-ov" style={{ background: `linear-gradient(180deg, transparent 42%, ${alpha(accent, "d9")} 100%)` }}>
+        {/* 다크 모드에서는 스크린샷 자체가 어두워 오버레이가 겹치면 탁해집니다 — 알파를 낮춥니다 */}
+        <div className="md-ov" style={{ background: `linear-gradient(180deg, transparent 42%, ${alpha(accent, mode === "dark" ? "99" : "d9")} 100%)` }}>
           <span className="md-cta">VIEW PROJECT ↗</span>
         </div>
       </div>

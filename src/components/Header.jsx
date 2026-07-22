@@ -54,7 +54,11 @@ function AccentPicker({ accentKey, setAccentKey, cv }) {
         aria-expanded={open}
       />
       <div className={`ac-pop${open ? " open" : ""}`} role="group" aria-label="액센트 컬러 선택">
-        <p className="ac-lb"><span className="tk-key">accent:</span> <span className="tk-str">'{accentKey}'</span></p>
+        {/* 값은 현재 액센트 색으로 — .tk-str은 코드 문자열 초록 고정이라 액센트를 바꿔도 안 따라옵니다 */}
+        <p className="ac-lb">
+          <span className="tk-key">accent:</span>{" "}
+          <span className="tk-str" style={{ color: "var(--accent)", transition: "color .3s" }}>'{accentKey}'</span>
+        </p>
         <div className="ac-sws">
           {accentKeys.map((k) => (
             <button

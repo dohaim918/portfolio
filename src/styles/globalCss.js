@@ -47,7 +47,8 @@ export function buildCss({ cv, accent, mode }) {
         /* ---------- intro ---------- */
         .it{position:relative;height:100dvh;min-height:620px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;}
         .it-grid{position:absolute;inset:0;pointer-events:none;opacity:0;animation:itBg 1.4s ease .1s forwards,itSettle 2s ease .1s forwards;
-          background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+          /* 격자는 --line(8%)보다 옅게 — 배경 텍스처라 존재만 느껴지면 됩니다 */
+          background-image:linear-gradient(${cv.main}${mode === "dark" ? "0b" : "0e"} 1px,transparent 1px),linear-gradient(90deg,${cv.main}${mode === "dark" ? "0b" : "0e"} 1px,transparent 1px);
           background-size:72px 72px;
           mask-image:radial-gradient(ellipse 80% 70% at 50% 45%,#000 30%,transparent 100%);
           -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 45%,#000 30%,transparent 100%);}
@@ -251,8 +252,12 @@ export function buildCss({ cv, accent, mode }) {
         #about,#journey,#skills,#projects{position:relative;isolation:isolate;}
         #about::before,#journey::before,#skills::before,#projects::before{
           content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;transition:background .6s ease;}
+        /* 첫 줄은 인트로 하단 글로우를 이어받습니다 — 인트로는 overflow:hidden이라 밖으로 못 나가므로,
+           같은 색·크기의 그라디언트를 중심만 -12dvh(인트로 중심 88% - 100%)에 두면
+           경계에서 알파가 정확히 이어져(0x1d) 잘린 자국 없이 흘러내립니다 */
         #about::before{
-          background:radial-gradient(980px 58% at -6% 50%, ${cv.violet}${mode === "dark" ? "20" : "28"}, transparent 74%);}
+          background:radial-gradient(560px 420px at 14% -12dvh, ${cv.deepPink}${mode === "dark" ? "2e" : "24"}, transparent 70%),
+                     radial-gradient(980px 58% at -6% 50%, ${cv.violet}${mode === "dark" ? "20" : "28"}, transparent 74%);}
         /* Journey에만 초록 한 톤 — 자주색 아래로 흘러내리게 두고,
            휘도가 가장 높아(.80) 알파는 가장 낮게 잡습니다 */
         #journey::before{

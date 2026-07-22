@@ -111,7 +111,7 @@ export default function DohaPortfolioV11() {
       <About addReveal={addReveal} />
       <Journey cv={cv} addReveal={addReveal} />
       <Skills tab={tab} setTab={setTab} addReveal={addReveal} />
-      <Projects cv={cv} filter={filter} setFilter={setFilter} addReveal={addReveal} />
+      <Projects cv={cv} mode={mode} filter={filter} setFilter={setFilter} addReveal={addReveal} />
       <Contact />
       <TopButton topBtn={topBtn} scrollTo={scrollTo} />
     </div>

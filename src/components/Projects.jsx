@@ -3,7 +3,7 @@ import Section from "./Section";
 import MainProjectCard from "./MainProjectCard";
 import SubCard from "./SubCard";
 
-export default function Projects({ cv, filter, setFilter, addReveal }) {
+export default function Projects({ cv, mode, filter, setFilter, addReveal }) {
   const mains = projects.filter((p) => p.type === "main");
   const subs = projects.filter((p) => p.type === "sub" && (filter === "all" || p.category === filter));
 
@@ -11,7 +11,7 @@ export default function Projects({ cv, filter, setFilter, addReveal }) {
     <Section id="projects" addReveal={addReveal}>
       <div className="pf-list">
         {mains.map((p) => (
-          <MainProjectCard key={p.num} p={p} cv={cv} addReveal={addReveal} />
+          <MainProjectCard key={p.num} p={p} cv={cv} mode={mode} addReveal={addReveal} />
         ))}
       </div>
 

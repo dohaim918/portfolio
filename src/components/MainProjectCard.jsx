@@ -4,7 +4,7 @@ import ActionLink from "./ActionLink";
 import StackTags from "./StackTags";
 
 /* 대표작 카드 — 텍스트 + 미디어. 좌우 교차 배치는 .pf-item:nth-child(even) CSS가 담당합니다. */
-export default function MainProjectCard({ p, cv, addReveal }) {
+export default function MainProjectCard({ p, cv, mode, addReveal }) {
   const ac = cv[p.accent];
 
   return (
@@ -32,7 +32,7 @@ export default function MainProjectCard({ p, cv, addReveal }) {
         </div>
       </div>
       <div className="pf-media">
-        <Media img={p.img} label={p.imgLabel} accent={ac} url={p.links[0]?.url} />
+        <Media img={p.img} label={p.imgLabel} accent={ac} mode={mode} url={p.links[0]?.url} />
       </div>
     </article>
   );
