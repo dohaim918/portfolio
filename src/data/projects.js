@@ -65,7 +65,7 @@ export const projects = [
     ],
     stack: ["React", "Vite", "JavaScript", "Figma"],
     links: [{ txt: "GITHUB", url: "https://github.com/dohaim918/hwaseong-yahwa-web" }],
-    img: null, // 스크린샷 경로/URL 입력 시 자동 적용
+    img: "/hwaseong.jpg",
     imgLabel: "MAIN VISUAL",
   },
   {
