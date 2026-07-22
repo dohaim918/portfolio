@@ -16,6 +16,7 @@ export const skillTabs = {
     { name: "Photoshop", txt: "웹에 필요한 이미지 보정·합성·에셋 제작을 할 수 있습니다." },
     { name: "Illustrator", txt: "로고·아이콘 등 벡터 그래픽을 직접 제작할 수 있습니다." },
     { name: "After Effects", txt: "모션 감각을 익힌 툴로, 웹 인터랙션과 애니메이션 타이밍 설계에 그 감각을 활용합니다." },
+    { name: "Premiere Pro", txt: "영상 편집과 컷 리듬을 다루며, 화면 전환의 완급을 조절하는 감각을 익혔습니다." },
   ],
   ETC: [
     { name: "Git / GitHub", txt: "main · dev · feature 브랜치 전략과 기능 단위 PR, PR 전 rebase 규칙으로 협업할 수 있습니다." },

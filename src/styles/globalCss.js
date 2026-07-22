@@ -142,7 +142,9 @@ export function buildCss({ cv, accent, mode }) {
 
         /* accent picker — 도트 + 헤더 아래 토큰 팝오버 */
         .hd-ac{position:relative;display:flex;align-items:center;}
-        .hd-sw{width:18px;height:18px;border-radius:50%;border:1px solid var(--line);cursor:pointer;padding:0;transition:transform .2s,box-shadow .25s;box-shadow:0 0 0 3px ${accent}22;}
+        .hd-sw{position:relative;width:18px;height:18px;border-radius:50%;border:1px solid var(--line);cursor:pointer;padding:0;transition:transform .2s,box-shadow .25s;box-shadow:0 0 0 3px ${accent}22;}
+        /* 보이는 크기는 18px로 두되 탭 영역만 36px로 넓힙니다 — 모바일에서 이 도트가 테마 시연 진입점입니다 */
+        .hd-sw::before{content:"";position:absolute;inset:-9px;border-radius:50%;}
         .hd-sw:hover{transform:scale(1.12);}
         .hd-sw:focus-visible{outline:2px solid var(--main);outline-offset:3px;}
         .ac-pop{position:absolute;top:calc(100% + 14px);right:-8px;z-index:260;padding:16px 18px 14px;background:var(--bg-card);border:1px solid var(--line);border-radius:12px;box-shadow:0 24px 60px -24px ${accent}${mode === "dark" ? "55" : "44"};opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .22s ease,transform .22s ease,visibility .22s;}
@@ -237,7 +239,7 @@ export function buildCss({ cv, accent, mode }) {
         .sec{padding:160px 0;}
 
         /* ---------- 앰비언트 글로우 ----------
-           선을 걷어낸 자리를 빛의 흐름이 대신합니다. 규칙 세 가지:
+           선을 걷어낸 자리를 빛의 흐름이 대신합니다. 규칙 다섯 가지:
            1) 중심을 화면 좌우 바깥(-6% / 106%)에 두고 번짐만 들어오게 합니다.
               동그란 덩어리가 아니라 옆에서 스며드는 결로 보입니다.
            2) 세로는 중심 50% · 크기 46% · 페이드 72%라 섹션 위아래 경계에 닿기 전에
@@ -258,8 +260,8 @@ export function buildCss({ cv, accent, mode }) {
         #about::before{
           background:radial-gradient(560px 420px at 14% -12dvh, ${cv.deepPink}${mode === "dark" ? "2e" : "24"}, transparent 70%),
                      radial-gradient(980px 58% at -6% 50%, ${cv.violet}${mode === "dark" ? "20" : "28"}, transparent 74%);}
-        /* Journey에만 초록 한 톤 — 자주색 아래로 흘러내리게 두고,
-           휘도가 가장 높아(.80) 알파는 가장 낮게 잡습니다 */
+        /* 자주색을 오른쪽에 크게 깔고, 그 아래로 violet을 옅게 겹쳐
+           한 덩이가 흘러내리는 결로 보이게 합니다 */
         #journey::before{
           background:radial-gradient(940px 64% at 106% 50%, ${cv.deepPink}${mode === "dark" ? "2c" : "1e"}, transparent 74%),
                      radial-gradient(700px 26% at 100% 76%, ${cv.violet}${mode === "dark" ? "10" : "18"}, transparent 60%);}
