@@ -105,7 +105,7 @@ export const projects = [
     accent: "sky",
     txt: "저장만 해두고 다시 찾지 못했던 링크와 파일을 한곳에 모아 정리하고, 중복 확인과 다음에 볼 자료 추천까지 돕는 서비스.",
     stack: ["Next.js", "React", "TypeScript", "Supabase", "PostgreSQL", "OpenAI API", "Tailwind CSS"],
-    url: "https://github.com/dohaim918/ai-material-navigator",
+    url: "https://github.com/dohaim918/ai-material-navigator-showcase",
   },
   /* ▼ 다음 개인 작업은 여기에 추가 */
 ];
