@@ -13,7 +13,7 @@ export const sections = {
   skills: {
     lb: "SKILLS",
     no: "03",
-    ttl: "쓸 수 있는 것보다, 해본 것을 씁니다",
+    ttl: "열일곱 가지 기술, 네 가지 분야",
   },
   projects: {
     lb: "MAIN PROJECTS",
